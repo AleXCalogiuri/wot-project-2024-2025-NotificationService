@@ -10,7 +10,7 @@ public class RabbitConfig {
 
     public static final String NOT_ADMIN = "not-admin";
     public static final String ADD_OPERATORE = "addnew-operatore";
-
+    public static final String ADD_ENTE = "addnew-ente";
     public static final String UPDATE_USER = "updateUser";
 
 
@@ -22,7 +22,14 @@ public class RabbitConfig {
     }
 
     @Bean
-    public Queue addNewArtist(){return new Queue(ADD_OPERATORE, false);}
+    public Queue addnewOperatore(){
+        return new Queue(ADD_OPERATORE, false);
+    }
+
+    @Bean
+    public Queue addnewEnte(){
+        return new Queue(ADD_ENTE, false);
+    }
 
     @Bean
     public Queue updateUser(){return new Queue(UPDATE_USER, false);}
