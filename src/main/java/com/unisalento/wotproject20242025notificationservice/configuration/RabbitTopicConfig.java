@@ -13,7 +13,7 @@ public class RabbitTopicConfig {
     public static final String TOPIC_EXCHANGE_NAME = "topic-exchange";
     public static final String QUEUE_ERROR_LOGS = "queue-error-logs";
     public static final String QUEUE_ALL_LOGS = "queue-all-logs";
-
+    public static final String NOTIFY_SENSOR_ANOMALIES = "notify-sensor-anomalies";
     @Bean
     public TopicExchange topicExchange() {
         return new TopicExchange(TOPIC_EXCHANGE_NAME);
@@ -27,6 +27,10 @@ public class RabbitTopicConfig {
     @Bean
     public Queue queueAllLogs() {
         return new Queue(QUEUE_ALL_LOGS, false);
+    }
+
+    public Queue notifySensorAnomalies() {
+        return new Queue(NOTIFY_SENSOR_ANOMALIES, false);
     }
 
     @Bean
