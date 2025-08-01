@@ -31,22 +31,9 @@ public class MessageListener {
     @Autowired
     NotificationBusiness notificationBusiness;
 
-    @RabbitListener(queues = RabbitConfig.NOT_ADMIN)
-    public void receiveMessage(String message){
-        Optional<Notification> existingNotification = notificationAdminRepository.findByMessage(message);
-        if(existingNotification.isPresent()){
-            return;
-        }
-        NotificationDTO notificationDTO = new NotificationDTO();
-        notificationDTO.setMessage(message);
-        notificationDTO.setIdMittente("pub");
-        notificationDTO.setType("admin");
-        Notification notification = notificationBusiness.toNotifica(notificationDTO);
-        notificationAdminRepository.save(notification);
-    }
 
     @RabbitListener(queues = RabbitConfig.ADD_OPERATORE)
-    public void addArtist(String message){
+    public void addOperatore(String message){
         Optional<Notification> existingNotification = notificationAdminRepository.findByMessage(message);
         if (existingNotification.isPresent()){
             return;
@@ -65,12 +52,15 @@ public class MessageListener {
         String message = "UPDATE ACCOUNT";
         NotificationUser notification = new NotificationUser();
         notification.setMessage(message);
-        notification.setIdMittente("MUSIC VIRUS");
+        notification.setIdMittente("ROAD SENSORS MONITOR");
         notification.setType(idUser);
         notification.setData(LocalDateTime.now());
         notification.setLetta(false);
         notificationUserRepository.save(notification);
     }
+
+
+
 
 
 
