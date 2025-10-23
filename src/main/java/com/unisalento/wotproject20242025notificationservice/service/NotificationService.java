@@ -2,8 +2,10 @@ package com.unisalento.wotproject20242025notificationservice.service;
 
 import com.unisalento.wotproject20242025notificationservice.components.NotificationBusiness;
 import com.unisalento.wotproject20242025notificationservice.domain.Notification;
+import com.unisalento.wotproject20242025notificationservice.domain.NotificationUser;
 import com.unisalento.wotproject20242025notificationservice.dto.NotificationDTO;
 import com.unisalento.wotproject20242025notificationservice.repositories.NotificationAdminRepository;
+import com.unisalento.wotproject20242025notificationservice.repositories.NotificationUserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,9 +19,11 @@ public class NotificationService {
 
     private final NotificationBusiness notificationBusiness = new NotificationBusiness();
     private final NotificationAdminRepository notificationAdminRepository;
+    private final NotificationUserRepository notificationUserRepository;
 
-    public NotificationService(NotificationAdminRepository notificationAdminRepository) {
+    public NotificationService(NotificationAdminRepository notificationAdminRepository, NotificationUserRepository notificationUserRepository) {
         this.notificationAdminRepository = notificationAdminRepository;
+        this.notificationUserRepository = notificationUserRepository;
     }
 
     public List<NotificationDTO> deleteNotify(NotificationDTO notificationDTO) {
@@ -43,5 +47,21 @@ public class NotificationService {
             notificationDTOS.add(notDTO);
         }
         return notificationDTOS;
+    }
+
+    public void setAdminIsLetta(String id){
+        Optional<Notification> notification = notificationAdminRepository.findById(id);
+        if(notification.isPresent()){
+            notification.get().setLetta(true);
+            notificationAdminRepository.save(notification.get());
+        }
+    }
+
+    public void setUserIsLetta(String id){
+        Optional<NotificationUser> notification = notificationUserRepository.findById(id);
+        if(notification.isPresent()){
+            notification.get().setLetta(true);
+            notificationUserRepository.save(notification.get());
+        }
     }
 }

@@ -6,14 +6,13 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 @Configuration
 public class RabbitTopicConfig {
-
     public static final String TOPIC_EXCHANGE_NAME = "topic-exchange";
     public static final String QUEUE_ERROR_LOGS = "queue-error-logs";
     public static final String QUEUE_ALL_LOGS = "queue-all-logs";
     public static final String NOTIFY_SENSOR_ANOMALIES = "notify-sensor-anomalies";
+
     @Bean
     public TopicExchange topicExchange() {
         return new TopicExchange(TOPIC_EXCHANGE_NAME);
@@ -29,6 +28,7 @@ public class RabbitTopicConfig {
         return new Queue(QUEUE_ALL_LOGS, false);
     }
 
+    @Bean  // ← AGGIUNTO
     public Queue notifySensorAnomalies() {
         return new Queue(NOTIFY_SENSOR_ANOMALIES, false);
     }
@@ -41,5 +41,12 @@ public class RabbitTopicConfig {
     @Bean
     public Binding bindingAllLogs(Queue queueAllLogs, TopicExchange topicExchange) {
         return BindingBuilder.bind(queueAllLogs).to(topicExchange).with("log.*");
+    }
+
+    @Bean  // ← AGGIUNTO
+    public Binding bindingNotifySensorAnomalies(Queue notifySensorAnomalies, TopicExchange topicExchange) {
+        return BindingBuilder.bind(notifySensorAnomalies)
+                .to(topicExchange)
+                .with("sensor.anomaly.*"); // adatta il routing key alle tue esigenze
     }
 }
